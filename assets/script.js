@@ -10,7 +10,7 @@ function getData(){
   
   var cityText = cityName.value;
 
-  var apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?city=" + cityText + "&onsaleOnStartDate=2023-04-07&apikey=1f2AwjK2AAERSzyWIP5MWX9nLRXGFLGZ"
+  var apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?city=" + cityText + "&onsaleOnStartDate=2023-04-07&apikey=NVTo5BdoHOx3wqrQqHYBnp1JGWpEdeQ7"
     
     fetch (apiUrl) 
         .then (function (response){
