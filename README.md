@@ -14,7 +14,7 @@ No installation is required to use the Date Planner.
 
 ## Usage
 
-Access the date planner through this [Link](https://alboy77.github.io/date_planner/).
+Access the date planner through this [Link](https://dhclarke99.github.io/date_planner/).
 
 
 '''
