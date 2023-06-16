@@ -3,6 +3,76 @@ var cityName = document.querySelector("#city-search");
 var ulElement = document.querySelector(".event-list");
 var googleLocation = document.querySelector(".location");
 var selectedVenueEl = document.querySelector(".selected-venue")
+var venueReviews = document.querySelector("#venue-reviews")
+var restaurantPriceLevel = document.querySelector("#price-level")
+var restaurantRating = document.querySelector("#rating")
+var restaurantTotalReviews = document.querySelector("#total-reviews")
+
+function clearVenueReviewList() {
+  while (venueReviews.firstChild) {
+    venueReviews.removeChild(venueReviews.firstChild);
+  }
+}
+
+function clearRestaurantReviewList() {
+  while (restaurantPriceLevel.firstChild) {
+    restaurantPriceLevel.removeChild(restaurantPriceLevel.firstChild);
+    restaurantRating.removeChild(restaurantRating.firstChild);
+    restaurantTotalReviews.removeChild(restaurantTotalReviews.firstChild);
+  }
+}
+
+ function getVenueReviews (place) {
+console.log(place)
+var reviews = place.reviews
+var h2Element = document.createElement("h2")
+h2Element.setAttribute("class", "reviews-title")
+h2Element.textContent = "Venue Reviews"
+venueReviews.appendChild(h2Element)
+
+for (var i = 0; i<reviews.length; i++) {
+  var pElement = document.createElement("p")
+  pElement.textContent = reviews[i].text
+  venueReviews.appendChild(pElement)
+  console.log(reviews[i].text)
+}
+applyReviewStyles();
+ }
+
+ function applyReviewStyles() {
+  var venueReviewsElement = document.querySelector("#venue-reviews");
+  venueReviewsElement.style.width = "50%";
+  venueReviewsElement.style.height = "100%";
+  venueReviewsElement.style.overflowY = "scroll";
+  venueReviewsElement.style.border = "1px solid #ccc";
+  venueReviewsElement.style.padding = "10px";
+
+  if (window.innerWidth <= 768) {
+    venueReviewsElement.style.width = "100%";
+    venueReviewsElement.style.height = "50%";
+  }
+}
+
+function getRestaurantReviews (place) {
+  console.log(place)
+  console.log(place.price_level)
+  console.log(place.rating)
+  console.log(place.user_ratings_total)
+
+  var pElementPrice = document.createElement("p")
+  pElementPrice.textContent = place.price_level
+  restaurantPriceLevel.appendChild(pElementPrice)
+
+  var pElementRating = document.createElement("p")
+  pElementRating.textContent = place.rating
+  restaurantRating.appendChild(pElementRating)
+
+  var pElementTotalReviews = document.createElement("p")
+  pElementTotalReviews.textContent = place.user_ratings_total
+  restaurantTotalReviews.appendChild(pElementTotalReviews)
+
+
+}
 
 
 function clearEventList() {
@@ -122,7 +192,8 @@ function initMap() {
 
   autocomplete.addListener("place_changed", () => {
     var place = autocomplete.getPlace();
-    console.log(place)
+    clearVenueReviewList();
+    getVenueReviews(place);
     if (place.geometry) {
       map.panTo(place.geometry.location);
       map.setZoom(15);
@@ -182,10 +253,9 @@ function initMap() {
 
           (function (marker, place) {
             marker.addListener("click", () => {
-              console.log(place)
-              console.log(place.price_level)
-              console.log(place.rating)
-              console.log(place.user_ratings_total)
+              clearRestaurantReviewList()
+              getRestaurantReviews(place)
+              
               infoWindow.setContent(place.name);
               infoWindow.open(map, marker);
               console.log(place.name + ": " + place.types[0]);
