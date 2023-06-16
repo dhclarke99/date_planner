@@ -16,39 +16,33 @@
     </header>
 
     <main class="big-main">
-        <main>
-            <section class="column is-one-third">
-                <div class="submit-button">
-                    <input id="city-search" type="text" placeholder="Search City" />
-                    <button id="submit" class="button is-primary">SUBMIT</button>
-
-                </div>
-            </section>
-
-            <div class="column is-one-half" id="map"></div>
-            <input id="search" type="text" placeholder="Search for a location" />
-            <div class="box">
-                <section class="label"> ITINERARY </section>
-                <ul id="restaurantList" class="field">
-                    <li class="selected-restaurant">Your Picked Restaurant!</li>
-                    <li class="selected-venue">Your Picked Venue!</li>
-                </ul>
-                <span><button id="saveDateBtn" class="button is-primary">SAVE DATE</button></span>
+        
+        <section class="column is-one-third">
+            <div class="submit-button">
+                <input id="city-search" type="text" placeholder="Search City" />
+                <button id="submit" class="button is-primary">SUBMIT</button>
+                <ul class="event-list"></ul>
             </div>
-        </main>
-        <ul class="event-list">
-        </ul>
+        </section>
+
+        <div id="map"></div>
+        <input id="search" type="text" placeholder="Search for a location" />
+        <div class="box">
+            <section class="label">ITINERARY</section>
+            <ul id="restaurantList" class="field">
+                <li class="selected-restaurant">Your Picked Restaurant!</li>
+                <li class="selected-venue">Your Picked Venue!</li>
+            </ul>
+            <button id="saveDateBtn" class="button is-primary">SAVE DATE</button>
+        </div>
     </main>
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="./assets/script.js"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0QAbKV2V8kgUlweV0vwy8fSroXLx23tE&callback=initMap"></script>
-    <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0QAbKV2V8kgUlweV0vwy8fSroXLx23tE&libraries=places&callback=initMap"></script>
+    
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="./assets/script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0QAbKV2V8kgUlweV0vwy8fSroXLx23tE&libraries=places&callback=initMap"></script>
 </body>
 
 </html>
