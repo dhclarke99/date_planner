@@ -122,6 +122,7 @@ function initMap() {
 
   autocomplete.addListener("place_changed", () => {
     var place = autocomplete.getPlace();
+    console.log(place)
     if (place.geometry) {
       map.panTo(place.geometry.location);
       map.setZoom(15);
@@ -131,6 +132,7 @@ function initMap() {
         map: map,
         title: place.name
       });
+      
 
       marker.addListener("click", () => {
         infoWindow.setContent(place.name);
@@ -164,6 +166,7 @@ function initMap() {
     };
 
     var service = new places.PlacesService(map);
+    
 
 
     service.nearbySearch(request, (results, status) => {
@@ -175,9 +178,14 @@ function initMap() {
             position: place.geometry.location,
             title: place.name
           });
+          
 
           (function (marker, place) {
             marker.addListener("click", () => {
+              console.log(place)
+              console.log(place.price_level)
+              console.log(place.rating)
+              console.log(place.user_ratings_total)
               infoWindow.setContent(place.name);
               infoWindow.open(map, marker);
               console.log(place.name + ": " + place.types[0]);
