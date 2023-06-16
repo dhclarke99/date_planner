@@ -11,88 +11,98 @@ function clearEventList() {
   }
 }
 
-function getData(){
-  
+function getData() {
+
   clearEventList();
 
   var cityText = cityName.value;
 
   var apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?city=" + cityText + "&onsaleOnStartDate=2023-04-07&apikey=NVTo5BdoHOx3wqrQqHYBnp1JGWpEdeQ7"
-    
-    fetch (apiUrl) 
-        .then (function (response){
-            return response.json ();
-        })
-        //getting name of venue for event in searched city
-        .then (function (data){
-          console.log(data._embedded.events.length)
-          console.log(data._embedded.events)
-          console.log(data)
-          var arrayItems = []
-          var arraySearch = []
-          var arrayLinks = []
-          for (var i = 0; i < data._embedded.events.length - 1; i++) {
-            // if any of the below fields are missing, loop will fail
-            arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: " + data._embedded.events[i].classifications[0].subGenre.name)
-            arraySearch.push(data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
-            arrayLinks.push(data._embedded.events[i].url)
-            //logging venue name, Event Type, and Subgenre.
-            //  console.log (data._embedded.events[i]._embedded.venues[0].name + ": " + data._embedded.events[i].classifications[0].segment.name + ": " + data._embedded.events[i].classifications[0].subGenre.name)
-             var event =(data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
-             console.log(event)
-             
 
-          
-          }
-          console.log(arrayLinks)
-          for (var i = 0; i < arrayItems.length; i++) {
-            var buttonElement = document.createElement("button");
-            buttonElement.setAttribute("class", "location");
-            
-            var liElement = document.createElement("li");
-            var aElement = document.createElement("a")
+  fetch(apiUrl)
+    .then(function (response) {
+      return response.json();
+    })
+    //getting name of venue for event in searched city
+    .then(function (data) {
+      console.log(data._embedded.events.length)
+      console.log(data._embedded.events)
+      console.log(data)
+      var arrayItems = []
+      var arraySearch = []
+      var arrayLinks = []
+      for (var i = 0; i < data._embedded.events.length - 1; i++) {
+        // if any of the below fields are missing, loop will fail
+        arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: " + data._embedded.events[i].classifications[0].subGenre.name)
+        arraySearch.push(data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
+        arrayLinks.push(data._embedded.events[i].url)
+        //logging venue name, Event Type, and Subgenre.
+        //  console.log (data._embedded.events[i]._embedded.venues[0].name + ": " + data._embedded.events[i].classifications[0].segment.name + ": " + data._embedded.events[i].classifications[0].subGenre.name)
+        var event = (data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
+        console.log(event)
 
-            
-            buttonElement.textContent = arrayItems[i];
-            aElement.setAttribute("href", arrayLinks[i]);
-            aElement.setAttribute("target", "_blank");  
 
-            aElement.appendChild(buttonElement)
-            liElement.appendChild(aElement)
-            ulElement.appendChild(liElement)
 
-            
-            buttonElement.addEventListener("click", function(event){
-              setLocation(event);
-            });
-          
-              
-          }
-          function setLocation (event){
-            
-            // var {Map, places} = google.maps;
-            // var Marker = google.maps.Marker;
-          
-            // map = new Map(document.getElementById("map"), {
-            //   center: { lat: -34.397, lng: 150.644 },
-            //   zoom: 8,
-            // });
-            
-            var buttonText = event.target.textContent;
-            console.log(buttonText);
-            
-            selectedVenueEl.textContent = buttonText;
-            
-          }
-          }
-        )
+      }
+      console.log(arrayLinks)
+      for (var i = 0; i < arrayItems.length; i++) {
+        var buttonElement = document.createElement("button");
+        buttonElement.setAttribute("class", "location");
+
+        var liElement = document.createElement("li");
+        var aElement = document.createElement("a")
+
+
+        buttonElement.textContent = arrayItems[i];
+        aElement.setAttribute("href", arrayLinks[i]);
+        aElement.setAttribute("target", "_blank");
+
+        aElement.appendChild(buttonElement)
+        liElement.appendChild(aElement)
+        ulElement.appendChild(liElement)
+
+
+        buttonElement.addEventListener("click", function (event) {
+          setLocation(event);
+
+        });
+
+
+      }
+      function setLocation(event) {
+
+        // var {Map, places} = google.maps;
+        // var Marker = google.maps.Marker;
+
+        // map = new Map(document.getElementById("map"), {
+        //   center: { lat: -34.397, lng: 150.644 },
+        //   zoom: 8,
+        // });
+
+
+        var buttonText = event.target.textContent.split(":");
+
+        console.log(buttonText);
+
+        var buttonText2 = buttonText[1].split("Genre")
+        console.log(buttonText2);
+
+        var finalVenue = buttonText2[0];
+
+        selectedVenueEl.textContent = finalVenue;
+        var searchInput = document.getElementById("search");
+        searchInput.value = finalVenue;
+
+      }
+    }
+    )
 }
-  
+
 var map;
 
 
 function initMap() {
-  var {Map, places} = google.maps;
+  var { Map, places } = google.maps;
   var Marker = google.maps.Marker;
 
   var restaurantList = document.getElementById("restaurantList");
@@ -147,15 +157,15 @@ function initMap() {
       }
     });
 
-      var request = {
+    var request = {
       location: map.getCenter(),
       radius: 500,
       type: "restaurant",
-};
-  
+    };
+
     var service = new places.PlacesService(map);
 
-  
+
     service.nearbySearch(request, (results, status) => {
       if (status === places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
@@ -166,7 +176,7 @@ function initMap() {
             title: place.name
           });
 
-          (function(marker, place) {
+          (function (marker, place) {
             marker.addListener("click", () => {
               infoWindow.setContent(place.name);
               infoWindow.open(map, marker);
