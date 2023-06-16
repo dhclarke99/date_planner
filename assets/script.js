@@ -5,9 +5,16 @@ var googleLocation = document.querySelector(".location");
 var selectedVenueEl = document.querySelector(".selected-venue")
 
 
+function clearEventList() {
+  while (ulElement.firstChild) {
+    ulElement.removeChild(ulElement.firstChild);
+  }
+}
 
 function getData(){
   
+  clearEventList();
+
   var cityText = cityName.value;
 
   var apiUrl = "https://app.ticketmaster.com/discovery/v2/events.json?city=" + cityText + "&onsaleOnStartDate=2023-04-07&apikey=NVTo5BdoHOx3wqrQqHYBnp1JGWpEdeQ7"
