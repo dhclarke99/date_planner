@@ -4,6 +4,7 @@ var ulElement = document.querySelector(".event-list");
 var googleLocation = document.querySelector(".location");
 var selectedVenueEl = document.querySelector(".selected-venue")
 var venueReviews = document.querySelector("#venue-reviews")
+var restaurantReviews = document.querySelector("#restaurant-reviews");
 var restaurantPriceLevel = document.querySelector("#price-level")
 var restaurantRating = document.querySelector("#rating")
 var restaurantTotalReviews = document.querySelector("#total-reviews")
@@ -22,24 +23,24 @@ function clearRestaurantReviewList() {
   }
 }
 
- function getVenueReviews (place) {
-console.log(place)
-var reviews = place.reviews
-var h2Element = document.createElement("h2")
-h2Element.setAttribute("class", "reviews-title")
-h2Element.textContent = "Venue Reviews"
-venueReviews.appendChild(h2Element)
+function getVenueReviews(place) {
+  console.log(place)
+  var reviews = place.reviews
+  var h2Element = document.createElement("h2")
+  h2Element.setAttribute("class", "venue-reviews-title")
+  h2Element.textContent = place.name
+  venueReviews.appendChild(h2Element)
 
-for (var i = 0; i<reviews.length; i++) {
-  var pElement = document.createElement("p")
-  pElement.textContent = reviews[i].text
-  venueReviews.appendChild(pElement)
-  console.log(reviews[i].text)
+  for (var i = 0; i < reviews.length; i++) {
+    var pElement = document.createElement("p")
+    pElement.textContent = reviews[i].text
+    venueReviews.appendChild(pElement)
+    console.log(reviews[i].text)
+  }
+  applyVenueReviewStyles();
 }
-applyReviewStyles();
- }
 
- function applyReviewStyles() {
+function applyVenueReviewStyles() {
   var venueReviewsElement = document.querySelector("#venue-reviews");
   venueReviewsElement.style.width = "50%";
   venueReviewsElement.style.height = "100%";
@@ -53,11 +54,18 @@ applyReviewStyles();
   }
 }
 
-function getRestaurantReviews (place) {
+function getRestaurantReviews(place) {
   console.log(place)
   console.log(place.price_level)
   console.log(place.rating)
   console.log(place.user_ratings_total)
+
+  var h2Element = document.querySelector(".restaurant-reviews-title")
+  h2Element.textContent = place.name
+
+  restaurantPriceLevel.textContent = "Price";
+  restaurantRating.textContent = "Rating"
+  restaurantTotalReviews.textContent = "Total Reviews"
 
   var pElementPrice = document.createElement("p")
   pElementPrice.textContent = place.price_level
@@ -71,7 +79,21 @@ function getRestaurantReviews (place) {
   pElementTotalReviews.textContent = place.user_ratings_total
   restaurantTotalReviews.appendChild(pElementTotalReviews)
 
+  applyRestaurantReviewStyles()
+}
 
+function applyRestaurantReviewStyles() {
+  
+  restaurantReviews.style.width = "50%";
+  restaurantReviews.style.height = "100%";
+  restaurantReviews.style.overflowY = "scroll";
+  restaurantReviews.style.border = "1px solid #ccc";
+  restaurantReviews.style.padding = "10px";
+
+  if (window.innerWidth <= 768) {
+    restaurantReviews.style.width = "100%";
+    restaurantReviews.style.height = "50%";
+  }
 }
 
 
@@ -203,7 +225,7 @@ function initMap() {
         map: map,
         title: place.name
       });
-      
+
 
       marker.addListener("click", () => {
         infoWindow.setContent(place.name);
@@ -237,7 +259,7 @@ function initMap() {
     };
 
     var service = new places.PlacesService(map);
-    
+
 
 
     service.nearbySearch(request, (results, status) => {
@@ -249,13 +271,13 @@ function initMap() {
             position: place.geometry.location,
             title: place.name
           });
-          
+
 
           (function (marker, place) {
             marker.addListener("click", () => {
               clearRestaurantReviewList()
               getRestaurantReviews(place)
-              
+
               infoWindow.setContent(place.name);
               infoWindow.open(map, marker);
               console.log(place.name + ": " + place.types[0]);
