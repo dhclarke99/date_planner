@@ -34,6 +34,7 @@ function getVenueReviews(place) {
   for (var i = 0; i < reviews.length; i++) {
     var pElement = document.createElement("p")
     pElement.textContent = reviews[i].text
+    // pElement.addClass('venue-review-text')
     venueReviews.appendChild(pElement)
     console.log(reviews[i].text)
   }
@@ -47,6 +48,10 @@ function applyVenueReviewStyles() {
   venueReviewsElement.style.overflowY = "scroll";
   venueReviewsElement.style.border = "1px solid #ccc";
   venueReviewsElement.style.padding = "10px";
+  venueReviewsElement.style.backgroundColor = "#f5f5f5"; /* Light gray background color */
+  venueReviewsElement.style.color = "#333"; /* Dark gray text color */
+  venueReviewsElement.style.fontFamily = "Arial, sans-serif"; /* Change font family */
+  venueReviewsElement.style.fontSize = "16px"; /* Adjust font size */
 
   if (window.innerWidth <= 768) {
     venueReviewsElement.style.width = "100%";
@@ -84,15 +89,21 @@ function getRestaurantReviews(place) {
 
 function applyRestaurantReviewStyles() {
   
-  restaurantReviews.style.width = "50%";
-  restaurantReviews.style.height = "100%";
-  restaurantReviews.style.overflowY = "scroll";
-  restaurantReviews.style.border = "1px solid #ccc";
-  restaurantReviews.style.padding = "10px";
+  var restaurantReviewsElement = document.querySelector("#restaurant-reviews");
+
+  restaurantReviewsElement.style.width = "50%";
+  restaurantReviewsElement.style.height = "100%";
+  restaurantReviewsElement.style.overflowY = "scroll";
+  restaurantReviewsElement.style.border = "1px solid #ccc";
+  restaurantReviewsElement.style.padding = "10px";
+  restaurantReviewsElement.style.backgroundColor = "#f5f5f5"; /* Light gray background color */
+  restaurantReviewsElement.style.color = "#333"; /* Dark gray text color */
+  restaurantReviewsElement.style.fontFamily = "Arial, sans-serif"; /* Change font family */
+  restaurantReviewsElement.style.fontSize = "16px"; /* Adjust font size */
 
   if (window.innerWidth <= 768) {
-    restaurantReviews.style.width = "100%";
-    restaurantReviews.style.height = "50%";
+    restaurantReviewsElement.style.width = "100%";
+    restaurantReviewsElement.style.height = "50%";
   }
 }
 
