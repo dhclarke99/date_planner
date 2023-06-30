@@ -9,6 +9,17 @@ var restaurantPriceLevel = document.querySelector("#price-level")
 var restaurantRating = document.querySelector("#rating")
 var restaurantTotalReviews = document.querySelector("#total-reviews")
 
+var autocomplete;
+function setLocation(event) {
+  var buttonText = event.target.textContent.split(":");
+  var buttonText2 = buttonText[1].split("Genre");
+  var finalVenue = buttonText2[0];
+  selectedVenueEl.textContent = finalVenue;
+  var searchInput = document.getElementById("search");
+  searchInput.value = finalVenue;
+
+}
+
 function clearVenueReviewList() {
   while (venueReviews.firstChild) {
     venueReviews.removeChild(venueReviews.firstChild);
@@ -24,7 +35,6 @@ function clearRestaurantReviewList() {
 }
 
 function getVenueReviews(place) {
-  console.log(place)
   var reviews = place.reviews
   var h2Element = document.createElement("h2")
   h2Element.setAttribute("class", "venue-reviews-title")
@@ -48,7 +58,6 @@ function getVenueReviews(place) {
     divElement.appendChild(ratingElement);
     divElement.appendChild(textElement);
     venueReviews.appendChild(divElement);
-    console.log(reviews[i].text);
   }
   applyVenueReviewStyles();
 }
@@ -57,7 +66,7 @@ function applyVenueReviewStyles() {
   var parentElement = document.querySelector(".reviews");
   var venueReviewsElement = document.querySelector("#venue-reviews");
 
-  parentElement.style.display = "flex"; // Add flexbox display to the parent element
+  parentElement.style.display = "flex";
 
 
   venueReviewsElement.style.width = "50%";
@@ -74,15 +83,11 @@ function applyVenueReviewStyles() {
     venueReviewsElement.style.width = "100%";
     venueReviewsElement.style.height = "50%";
     venueReviewsElement.style.position = "fixed";
-    venueReviewsElement.style.top = "50px"; // Adjust the top position based on your needs
+    venueReviewsElement.style.top = "50px";
   }
 }
 
 function getRestaurantReviews(place) {
-  console.log(place)
-  console.log(place.price_level)
-  console.log(place.rating)
-  console.log(place.user_ratings_total)
 
   var h2Element = document.querySelector(".restaurant-reviews-title")
   h2Element.textContent = place.name + " - Ratings"
@@ -107,7 +112,7 @@ function getRestaurantReviews(place) {
 }
 
 function applyRestaurantReviewStyles() {
-  
+
   var restaurantReviewsElement = document.querySelector("#restaurant-reviews");
 
   restaurantReviewsElement.style.width = "50%";
@@ -115,17 +120,16 @@ function applyRestaurantReviewStyles() {
   restaurantReviewsElement.style.overflowY = "scroll";
   restaurantReviewsElement.style.border = "1px solid #ccc";
   restaurantReviewsElement.style.padding = "10px";
-  restaurantReviewsElement.style.backgroundColor = "#f5f5f5"; /* Light gray background color */
-  restaurantReviewsElement.style.color = "#333"; /* Dark gray text color */
-  restaurantReviewsElement.style.fontFamily = "Arial, sans-serif"; /* Change font family */
-  restaurantReviewsElement.style.fontSize = "16px"; /* Adjust font size */
+  restaurantReviewsElement.style.backgroundColor = "#f5f5f5";
+  restaurantReviewsElement.style.color = "#333";
+  restaurantReviewsElement.style.fontFamily = "Arial, sans-serif";
+  restaurantReviewsElement.style.fontSize = "16px";
 
   if (window.innerWidth <= 768) {
     restaurantReviewsElement.style.width = "100%";
     restaurantReviewsElement.style.height = "50%";
   }
 }
-
 
 function clearEventList() {
   while (ulElement.firstChild) {
@@ -150,96 +154,60 @@ function getData() {
       // if there are no events, return an alert
       if (data.page.totalElements > 0) {
 
-      var arrayItems = []
-      var arraySearch = []
-      var arrayLinks = []
-      for (var i = 0; i < data._embedded.events.length ; i++) {
-        
-      //  if the subgenre value is missing, input "N/A"
-        if (data._embedded.events[i].classifications[0].subGenre){
-        arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: " + data._embedded.events[i].classifications[0].subGenre.name)
-        } else {
-          arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: N/A" )
+        var arrayItems = []
+        var arraySearch = []
+        var arrayLinks = []
+        for (var i = 0; i < data._embedded.events.length; i++) {
+
+          //  if the subgenre value is missing, input "N/A"
+          if (data._embedded.events[i].classifications[0].subGenre) {
+            arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: " + data._embedded.events[i].classifications[0].subGenre.name)
+          } else {
+            arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: N/A")
+          }
+          arraySearch.push(data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
+          arrayLinks.push(data._embedded.events[i].url)
+
         }
-        arraySearch.push(data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
-        arrayLinks.push(data._embedded.events[i].url)
-        //logging venue name, Event Type, and Subgenre.
-        //  console.log (data._embedded.events[i]._embedded.venues[0].name + ": " + data._embedded.events[i].classifications[0].segment.name + ": " + data._embedded.events[i].classifications[0].subGenre.name)
-        var event = (data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
-        console.log(event)
+
+        for (var i = 0; i < arrayItems.length; i++) {
+          var buttonElement = document.createElement("button");
+          buttonElement.setAttribute("class", "location");
+
+          var liElement = document.createElement("li");
+          var aElement = document.createElement("a")
 
 
+          buttonElement.textContent = arrayItems[i];
+          aElement.setAttribute("href", arrayLinks[i]);
+          aElement.setAttribute("target", "_blank");
 
+          aElement.appendChild(buttonElement)
+          liElement.appendChild(aElement)
+          ulElement.appendChild(liElement)
+
+
+          buttonElement.addEventListener("click", function (event) {
+            setLocation(event);
+
+          });
+        }
+
+      } else {
+        console.log(data)
+        alert("No upcoming ticketmaster events in this city")
       }
-      console.log(arrayLinks)
-      for (var i = 0; i < arrayItems.length; i++) {
-        var buttonElement = document.createElement("button");
-        buttonElement.setAttribute("class", "location");
-
-        var liElement = document.createElement("li");
-        var aElement = document.createElement("a")
-
-
-        buttonElement.textContent = arrayItems[i];
-        aElement.setAttribute("href", arrayLinks[i]);
-        aElement.setAttribute("target", "_blank");
-
-        aElement.appendChild(buttonElement)
-        liElement.appendChild(aElement)
-        ulElement.appendChild(liElement)
-
-
-        buttonElement.addEventListener("click", function (event) {
-          setLocation(event);
-
-        });
-
-
-      }
-      function setLocation(event) {
-
-        // var {Map, places} = google.maps;
-        // var Marker = google.maps.Marker;
-
-        // map = new Map(document.getElementById("map"), {
-        //   center: { lat: -34.397, lng: 150.644 },
-        //   zoom: 8,
-        // });
-
-
-        var buttonText = event.target.textContent.split(":");
-
-        console.log(buttonText);
-
-        var buttonText2 = buttonText[1].split("Genre")
-        console.log(buttonText2);
-
-        var finalVenue = buttonText2[0];
-
-        selectedVenueEl.textContent = finalVenue;
-        var searchInput = document.getElementById("search");
-        searchInput.value = finalVenue;
-
-      }
-    } else {
-      console.log(data)
-      alert("No upcoming ticketmaster events in this city")
     }
-    } 
     )
 }
-
-var map;
-
 
 function initMap() {
   var { Map, places } = google.maps;
   var Marker = google.maps.Marker;
 
-  var restaurantList = document.getElementById("restaurantList");
   var selectedRestaurant = document.querySelector(".selected-restaurant");
 
-  map = new Map(document.getElementById("map"), {
+  var map = new Map(document.getElementById("map"), {
     center: { lat: -34.397, lng: 150.644 },
     zoom: 8,
   });
@@ -269,9 +237,6 @@ function initMap() {
       marker.addListener("click", () => {
         infoWindow.setContent(place.name);
         infoWindow.open(map, marker);
-        console.log(place.name);
-        var eventName = place.name
-        console.log(eventName);
       });
     }
     document.getElementById("saveDateBtn").addEventListener("click", function () {
@@ -299,8 +264,6 @@ function initMap() {
 
     var service = new places.PlacesService(map);
 
-
-
     service.nearbySearch(request, (results, status) => {
       if (status === places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
@@ -311,7 +274,6 @@ function initMap() {
             title: place.name
           });
 
-
           (function (marker, place) {
             marker.addListener("click", () => {
               clearRestaurantReviewList()
@@ -319,7 +281,6 @@ function initMap() {
 
               infoWindow.setContent(place.name);
               infoWindow.open(map, marker);
-              console.log(place.name + ": " + place.types[0]);
 
               lastClickedMarker = place.name;
               selectedRestaurant.textContent = lastClickedMarker;
@@ -332,7 +293,6 @@ function initMap() {
   });
 }
 window.initMap = initMap;
-
 
 submitButton.addEventListener("click", getData)
 
