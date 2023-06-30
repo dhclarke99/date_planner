@@ -28,34 +28,53 @@ function getVenueReviews(place) {
   var reviews = place.reviews
   var h2Element = document.createElement("h2")
   h2Element.setAttribute("class", "venue-reviews-title")
-  h2Element.textContent = place.name
+  h2Element.textContent = place.name + " - Reviews"
   venueReviews.appendChild(h2Element)
 
   for (var i = 0; i < reviews.length; i++) {
-    var pElement = document.createElement("p")
-    pElement.textContent = reviews[i].text
-    // pElement.addClass('venue-review-text')
-    venueReviews.appendChild(pElement)
-    console.log(reviews[i].text)
+    var divElement = document.createElement("div")
+    var h3Element = document.createElement("h3")
+    var ratingElement = document.createElement("p");
+    var textElement = document.createElement("p")
+    h3Element.textContent = reviews[i].author_name + " - " + reviews[i].relative_time_description;
+    ratingElement.textContent = "Rating: " + reviews[i].rating;
+    textElement.textContent = '"' + reviews[i].text + '"';
+    textElement.setAttribute("class", "venue-reviews-text")
+    divElement.style.border = "1px solid #ccc";
+    divElement.style.borderColor = "#000000";
+    divElement.style.borderWidth = "3px";
+    divElement.style.margin = "5px";
+    divElement.appendChild(h3Element);
+    divElement.appendChild(ratingElement);
+    divElement.appendChild(textElement);
+    venueReviews.appendChild(divElement);
+    console.log(reviews[i].text);
   }
   applyVenueReviewStyles();
 }
 
 function applyVenueReviewStyles() {
+  var parentElement = document.querySelector(".reviews");
   var venueReviewsElement = document.querySelector("#venue-reviews");
+
+  parentElement.style.display = "flex"; // Add flexbox display to the parent element
+
+
   venueReviewsElement.style.width = "50%";
   venueReviewsElement.style.height = "100%";
   venueReviewsElement.style.overflowY = "scroll";
   venueReviewsElement.style.border = "1px solid #ccc";
   venueReviewsElement.style.padding = "10px";
-  venueReviewsElement.style.backgroundColor = "#f5f5f5"; /* Light gray background color */
-  venueReviewsElement.style.color = "#333"; /* Dark gray text color */
-  venueReviewsElement.style.fontFamily = "Arial, sans-serif"; /* Change font family */
-  venueReviewsElement.style.fontSize = "16px"; /* Adjust font size */
+  venueReviewsElement.style.backgroundColor = "#f5f5f5";
+  venueReviewsElement.style.color = "#333";
+  venueReviewsElement.style.fontFamily = "Arial, sans-serif";
+  venueReviewsElement.style.fontSize = "16px";
 
   if (window.innerWidth <= 768) {
     venueReviewsElement.style.width = "100%";
     venueReviewsElement.style.height = "50%";
+    venueReviewsElement.style.position = "fixed";
+    venueReviewsElement.style.top = "50px"; // Adjust the top position based on your needs
   }
 }
 
@@ -66,7 +85,7 @@ function getRestaurantReviews(place) {
   console.log(place.user_ratings_total)
 
   var h2Element = document.querySelector(".restaurant-reviews-title")
-  h2Element.textContent = place.name
+  h2Element.textContent = place.name + " - Ratings"
 
   restaurantPriceLevel.textContent = "Price";
   restaurantRating.textContent = "Rating"
@@ -128,15 +147,20 @@ function getData() {
     })
     //getting name of venue for event in searched city
     .then(function (data) {
-      console.log(data._embedded.events.length)
-      console.log(data._embedded.events)
-      console.log(data)
+      // if there are no events, return an alert
+      if (data.page.totalElements > 0) {
+
       var arrayItems = []
       var arraySearch = []
       var arrayLinks = []
-      for (var i = 0; i < data._embedded.events.length - 1; i++) {
-        // if any of the below fields are missing, loop will fail
+      for (var i = 0; i < data._embedded.events.length ; i++) {
+        
+      //  if the subgenre value is missing, input "N/A"
+        if (data._embedded.events[i].classifications[0].subGenre){
         arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: " + data._embedded.events[i].classifications[0].subGenre.name)
+        } else {
+          arrayItems.push("Venue: " + data._embedded.events[i]._embedded.venues[0].name + " Genre: " + data._embedded.events[i].classifications[0].segment.name + " SubGenre: N/A" )
+        }
         arraySearch.push(data._embedded.events[i]._embedded.venues[0].name + ", " + cityText)
         arrayLinks.push(data._embedded.events[i].url)
         //logging venue name, Event Type, and Subgenre.
@@ -197,7 +221,11 @@ function getData() {
         searchInput.value = finalVenue;
 
       }
+    } else {
+      console.log(data)
+      alert("No upcoming ticketmaster events in this city")
     }
+    } 
     )
 }
 

@@ -7,10 +7,13 @@
 }
 
 h1 {
-  background-color: #ffc0cb; /* Coral color */
+  background-color: #ffc0cb;
+  /* Coral color */
   text-align: center;
-  font-size: 40px; /* Increase font size */
-  color: black; /* White color */
+  font-size: 40px;
+  /* Increase font size */
+  color: black;
+  /* White color */
   margin-block-start: 0.5em;
   margin-block-end: 0.5em;
   font-family: 'Pacifico', cursive;
@@ -27,7 +30,8 @@ h1 {
   margin: 10px;
   padding: 10px;
   width: 100%;
-  font-size: 20px; /* Increase font size */
+  font-size: 20px;
+  /* Increase font size */
 }
 
 html,
@@ -35,15 +39,19 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Arial', sans-serif; /* Change font family */
-  background-color: #f5f5f5; /* Light gray background color */
+  font-family: 'Arial', sans-serif;
+  /* Change font family */
+  background-color: #f5f5f5;
+  /* Light gray background color */
 }
 
 .location {
   margin: 5px;
-  background-color: #ffc0cb; /* Pink color */
+  background-color: #ffc0cb;
+  /* Pink color */
   border-radius: 15px;
-  color: #333; /* Dark gray color */
+  color: #333;
+  /* Dark gray color */
 }
 
 .container {
@@ -58,12 +66,29 @@ body {
   flex-direction: column;
 }
 
-.venue-review-text {
+.venue-reviews-text {
   margin: 5px
+}
+
+.venue-reviews-title {
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+
 
 }
+
+.restaurant-reviews-title {
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  
+
+}
+
 .reviews {
   display: flex;
+  max-height: 200px;
 }
 
 @media screen and (min-width: 768px) {
