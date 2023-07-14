@@ -201,6 +201,24 @@ function getData() {
     )
 }
 
+document.getElementById("saveDateBtn").addEventListener("click", function () {
+  var selectedRestaurant = document.querySelector(".selected-restaurant");
+  var selectedVenue = document.querySelector(".selected-venue");
+
+  console.log(selectedRestaurant.textContent)
+  if (selectedRestaurant.textContent  && selectedVenue.textContent) {
+    var restaurantText = selectedRestaurant.textContent;
+    var venueText = selectedVenue.textContent;
+
+    localStorage.setItem("selectedRestaurant", restaurantText);
+    localStorage.setItem("selectedVenue", venueText);
+
+    alert("Date Saved!");
+  } else  {
+    alert("Error: Please select a restaurant and venue");
+  }
+});
+
 function initMap() {
   var { Map, places } = google.maps;
   var Marker = google.maps.Marker;
@@ -239,22 +257,7 @@ function initMap() {
         infoWindow.open(map, marker);
       });
     }
-    document.getElementById("saveDateBtn").addEventListener("click", function () {
-      var selectedRestaurant = document.querySelector(".selected-restaurant");
-      var selectedVenue = document.querySelector(".selected-venue");
-
-      if (selectedRestaurant && selectedVenue) {
-        var restaurantText = selectedRestaurant.textContent;
-        var venueText = selectedVenue.textContent;
-
-        localStorage.setItem("selectedRestaurant", restaurantText);
-        localStorage.setItem("selectedVenue", venueText);
-
-        alert("Date Saved!");
-      } else {
-        alert("Error: select a restaurant or venue");
-      }
-    });
+   
 
     var request = {
       location: map.getCenter(),
