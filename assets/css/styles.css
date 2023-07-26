@@ -25,6 +25,13 @@ h1 {
   flex-wrap: wrap;
   justify-content: center;
 }
+#map-search {
+  margin: 10px;
+  padding: 10px;
+  width: 100%;
+  font-size: 20px;
+  /* Increase font size */
+}
 
 #search {
   margin: 10px;
