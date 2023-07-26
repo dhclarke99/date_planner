@@ -170,6 +170,8 @@ function getData() {
 
         }
 
+        
+
         for (var i = 0; i < arrayItems.length; i++) {
           var buttonElement = document.createElement("button");
           buttonElement.setAttribute("class", "location");
