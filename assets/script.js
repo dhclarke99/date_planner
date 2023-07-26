@@ -170,7 +170,11 @@ function getData() {
 
         }
 
-        
+        var step1 = document.querySelector(".step1")
+        step1.style.visibility = ("hidden")
+
+        var step2 = document.querySelector(".step2")
+        step2.style.visibility = ("visible")
 
         for (var i = 0; i < arrayItems.length; i++) {
           var buttonElement = document.createElement("button");
