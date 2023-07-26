@@ -18,6 +18,11 @@ function setLocation(event) {
   var searchInput = document.getElementById("search");
   searchInput.value = finalVenue;
 
+  var step2 = document.querySelector(".step2")
+  step2.style.visibility = "hidden"
+  var step3 = document.querySelector(".step3")
+  step3.style.visibility = "visible"
+
 }
 
 function clearVenueReviewList() {
@@ -212,7 +217,7 @@ document.getElementById("saveDateBtn").addEventListener("click", function () {
   var selectedVenue = document.querySelector(".selected-venue");
 
   console.log(selectedRestaurant.textContent)
-  if (selectedRestaurant.textContent  && selectedVenue.textContent) {
+  if (selectedRestaurant.textContent && selectedVenue.textContent) {
     var restaurantText = selectedRestaurant.textContent;
     var venueText = selectedVenue.textContent;
 
@@ -220,7 +225,7 @@ document.getElementById("saveDateBtn").addEventListener("click", function () {
     localStorage.setItem("selectedVenue", venueText);
 
     alert("Date Saved!");
-  } else  {
+  } else {
     alert("Error: Please select a restaurant and venue");
   }
 });
@@ -263,7 +268,7 @@ function initMap() {
         infoWindow.open(map, marker);
       });
     }
-   
+
 
     var request = {
       location: map.getCenter(),
@@ -274,6 +279,10 @@ function initMap() {
     var service = new places.PlacesService(map);
 
     service.nearbySearch(request, (results, status) => {
+      var step3 = document.querySelector(".step3")
+      step3.style.visibility = "hidden"
+      var step4 = document.querySelector(".step4")
+      step4.style.visibility = "visible"
       if (status === places.PlacesServiceStatus.OK) {
         for (var i = 0; i < results.length; i++) {
           var place = results[i];
