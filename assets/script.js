@@ -113,6 +113,11 @@ function getRestaurantReviews(place) {
   pElementTotalReviews.textContent = place.user_ratings_total
   restaurantTotalReviews.appendChild(pElementTotalReviews)
 
+  var step4 = document.querySelector(".step4")
+      step4.style.visibility = "hidden"
+      var step5 = document.querySelector(".step5")
+      step5.style.visibility = "visible"
+
   applyRestaurantReviewStyles()
 }
 
