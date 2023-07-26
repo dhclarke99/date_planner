@@ -98,6 +98,22 @@ body {
   max-height: 200px;
 }
 
+.step1 {
+  visibility: visible;
+}
+
+.step2 {
+  visibility: hidden;
+}
+
+.step3 {
+  visibility: hidden;
+}
+
+.step4 {
+  visibility: hidden;
+}
+
 @media screen and (min-width: 768px) {
   #map {
     height: 400px;
